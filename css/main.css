@@ -1,0 +1,55 @@
+body {
+  font-family: Helvetica, Arial, sans-serif;
+}
+div {
+  width: 4em; 
+  height: 4em;
+}
+.board {
+  width: 38em;
+  margin: 0 auto;
+}
+.column {
+  display: inline-block;
+  margin-left: 3%;
+  text-align: center;
+}
+.row {
+  margin-top: 0.3em;
+  margin-bottom: 0.3em;
+  width: 100%;
+}
+.row-label, .column-label {
+  display: inline-block;
+  text-align: center;
+}
+.letters {
+  height: 1.2em;
+}
+.column-label {
+  height: 1.2em;
+  vertical-align: middle;
+}
+.square {
+  display: inline-block;
+  background: #339922;
+  vertical-align: middle;
+}
+.valid:hover {
+  background: #33cc22;
+}
+.black, .white {
+  margin: 0.2em;
+  height: 3.8em;
+  width: 3.8em;
+  border-radius: 2em;
+}
+.black {
+  background: #000;
+}
+.white {
+  background: #fff;
+}
+.score {
+  height: auto;
+}

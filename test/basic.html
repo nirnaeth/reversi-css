@@ -1,0 +1,147 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Reversi</title>
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/qunit.css">
+  </head>
+  <body>
+
+    <div id="board" class="board">
+
+      <!-- Column headers -->
+      <div class="row letters">
+        <div class="column-label"></div>
+        <div class="column-label">a</div>
+        <div class="column-label">b</div>
+        <div class="column-label">c</div>
+        <div class="column-label">d</div>
+        <div class="column-label">e</div>
+        <div class="column-label">f</div>
+        <div class="column-label">g</div>
+        <div class="column-label">h</div>
+      </div>
+
+      <!-- Row 1 -->
+      <div class="row">
+        <div class="row-label">1</div>
+        <div id="a1" class="square"></div>
+        <div id="b1" class="square"></div>
+        <div id="c1" class="square"></div>
+        <div id="d1" class="square"></div>
+        <div id="e1" class="square"></div>
+        <div id="f1" class="square"></div>
+        <div id="g1" class="square"></div>
+        <div id="h1" class="square"></div>
+      </div>
+
+      <!-- Row 2 -->
+      <div class="row">
+        <div class="row-label">2</div>
+        <div id="a2" class="square"></div>
+        <div id="b2" class="square"></div>
+        <div id="c2" class="square"></div>
+        <div id="d2" class="square"></div>
+        <div id="e2" class="square"></div>
+        <div id="f2" class="square"></div>
+        <div id="g2" class="square"></div>
+        <div id="h2" class="square"></div>
+      </div>
+
+      <!-- Row 3 -->
+      <div class="row">
+        <div class="row-label">3</div>
+        <div id="a3" class="square"></div>
+        <div id="b3" class="square"></div>
+        <div id="c3" class="square"></div>
+        <div id="d3" class="square"></div>
+        <div id="e3" class="square"></div>
+        <div id="f3" class="square"></div>
+        <div id="g3" class="square"></div>
+        <div id="h3" class="square"></div>
+      </div>
+
+      <!-- Row 4 -->
+      <div class="row">
+        <div class="row-label">4</div>
+        <div id="a4" class="square"></div>
+        <div id="b4" class="square"></div>
+        <div id="c4" class="square"></div>
+        <div id="d4" class="square"><div class="white"></div></div>
+        <div id="e4" class="square"><div class="black"></div></div>
+        <div id="f4" class="square"></div>
+        <div id="g4" class="square"></div>
+        <div id="h4" class="square"></div>
+      </div>
+
+      <!-- Row 5 -->
+      <div class="row">
+        <div class="row-label">5</div>
+        <div id="a5" class="square"></div>
+        <div id="b5" class="square"></div>
+        <div id="c5" class="square"></div>
+        <div id="d5" class="square"><div class="black"></div></div>
+        <div id="e5" class="square"><div class="white"></div></div>
+        <div id="f5" class="square"></div>
+        <div id="g5" class="square"></div>
+        <div id="h5" class="square"></div>
+      </div>
+
+      <!-- Row 6 -->
+      <div class="row">
+        <div class="row-label">6</div>
+        <div id="a6" class="square"></div>
+        <div id="b6" class="square"></div>
+        <div id="c6" class="square"></div>
+        <div id="d6" class="square"></div>
+        <div id="e6" class="square"></div>
+        <div id="f6" class="square"></div>
+        <div id="g6" class="square"></div>
+        <div id="h6" class="square"></div>
+      </div>
+
+      <!-- Row 7 -->
+      <div class="row">
+        <div class="row-label">7</div>
+        <div id="a7" class="square"></div>
+        <div id="b7" class="square"></div>
+        <div id="c7" class="square"></div>
+        <div id="d7" class="square"></div>
+        <div id="e7" class="square"></div>
+        <div id="f7" class="square"></div>
+        <div id="g7" class="square"></div>
+        <div id="h7" class="square"></div>
+      </div>
+
+      <!-- Row 8 -->
+      <div class="row">
+        <div class="row-label">8</div>
+        <div id="a8" class="square"></div>
+        <div id="b8" class="square"></div>
+        <div id="c8" class="square"></div>
+        <div id="d8" class="square"></div>
+        <div id="e8" class="square"></div>
+        <div id="f8" class="square"></div>
+        <div id="g8" class="square"></div>
+        <div id="h8" class="square"></div>
+      </div>
+
+    </div>
+
+    <div id="score" class="score">
+      <div class="score-white">White: <span id="white_score">2</span></div>
+      <div class="score-black">Black: <span id="black_score">2</span></div>
+    </div>
+
+    <div id="info" class="info">
+    </div>
+    <script src="../js/lib/jquery-1.7.2.min.js"></script>
+    <script src="../js/lib/qunit.js"></script>
+    <script src="../js/reversi.js"></script>
+    <script src="basic.js"></script>
+  </body>
+</html>
