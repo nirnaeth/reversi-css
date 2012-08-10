@@ -2,7 +2,7 @@ body {
   font-family: Helvetica, Arial, sans-serif;
 }
 .board {
-  width: 39em;
+  width: 41em;
   margin: 0 auto;
 }
 .column {
@@ -14,11 +14,11 @@ body {
   margin-top: 0.3em;
   margin-bottom: 0.3em;
   width: 100%;
-  height: 4em;
+  height: 4.2em;
 }
 .row-label, .column-label {
-  width: 4em;
-  height: 4em;
+  width: 4.2em;
+  height: 4.2em;
   display: inline-block;
   text-align: center;
 }
@@ -30,8 +30,8 @@ body {
   vertical-align: middle;
 }
 .square {
-  width: 4em;
-  height: 4em;
+  width: 4.2em;
+  height: 4.2em;
   display: inline-block;
   background: #339922;
   vertical-align: middle;
@@ -63,6 +63,7 @@ body {
   -o-transform: rotateY(180deg);
   -webkit-transform: rotateY(180deg);
   transform: rotateY(180deg);
+  right: 0;
 }
 .white {
   background: #fff;
