@@ -3,30 +3,30 @@
   var squareAt = function(i) {
     return $($('.square')[i]);
   };
-
-  var blackDisk = '<div class="black"></div>';
-  var whiteDisk = '<div class="white"></div>';
+  var squareAtData = function(i) {
+    return $($('.square')[i]).children().data('occupier');
+  };
 
   test('flip lines', function() {
-    $($('.square')[27]).trigger('click');
-    strictEqual( squareAt(9).html(), blackDisk, "NW diagonal flip fails");
-    strictEqual( squareAt(18).html(), blackDisk, "NW diagonal flip fails");
-    strictEqual( squareAt(13).html(), blackDisk, "NE diagonal flip fails");
-    strictEqual( squareAt(20).html(), blackDisk, "NE diagonal flip fails");
-    strictEqual( squareAt(11).html(), blackDisk, "N vertical flip fails");
-    strictEqual( squareAt(19).html(), blackDisk, "N vertical flip fails");
-    strictEqual( squareAt(19).html(), blackDisk, "N vertical flip fails");
-    strictEqual( squareAt(25).html(), blackDisk, "W horizontal flip fails");
-    strictEqual( squareAt(26).html(), blackDisk, "W horizontal flip fails");
-    strictEqual( squareAt(28).html(), blackDisk, "E horizontal flip fails");
-    strictEqual( squareAt(29).html(), blackDisk, "E horizontal flip fails");
-    strictEqual( squareAt(30).html(), blackDisk, "E horizontal flip fails");
-    strictEqual( squareAt(34).html(), blackDisk, "SW horizontal flip fails");
-    strictEqual( squareAt(41).html(), blackDisk, "SW horizontal flip fails");
-    strictEqual( squareAt(35).html(), blackDisk, "S vertical flip fails");
-    strictEqual( squareAt(43).html(), blackDisk, "S vertical flip fails");
-    strictEqual( squareAt(36).html(), blackDisk, "SE horizontal flip fails");
-    strictEqual( squareAt(45).html(), blackDisk, "SE horizontal flip fails");
+    squareAt(27).trigger('click');
+    strictEqual( squareAtData(9), 'black', "NW diagonal flip fails");
+    strictEqual( squareAtData(18), 'black', "NW diagonal flip fails");
+    strictEqual( squareAtData(13), 'black', "NE diagonal flip fails");
+    strictEqual( squareAtData(20), 'black', "NE diagonal flip fails");
+    strictEqual( squareAtData(11), 'black', "N vertical flip fails");
+    strictEqual( squareAtData(19), 'black', "N vertical flip fails");
+    strictEqual( squareAtData(19), 'black', "N vertical flip fails");
+    strictEqual( squareAtData(25), 'black', "W horizontal flip fails");
+    strictEqual( squareAtData(26), 'black', "W horizontal flip fails");
+    strictEqual( squareAtData(28), 'black', "E horizontal flip fails");
+    strictEqual( squareAtData(29), 'black', "E horizontal flip fails");
+    strictEqual( squareAtData(30), 'black', "E horizontal flip fails");
+    strictEqual( squareAtData(34), 'black', "SW horizontal flip fails");
+    strictEqual( squareAtData(41), 'black', "SW horizontal flip fails");
+    strictEqual( squareAtData(35), 'black', "S vertical flip fails");
+    strictEqual( squareAtData(43), 'black', "S vertical flip fails");
+    strictEqual( squareAtData(36), 'black', "SE horizontal flip fails");
+    strictEqual( squareAtData(45), 'black', "SE horizontal flip fails");
   });
 
 }(jQuery));

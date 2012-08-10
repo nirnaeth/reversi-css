@@ -4,14 +4,15 @@
     return $($('.square')[i]);
   };
 
-  var blackDisk = '<div class="black"></div>';
-  var whiteDisk = '<div class="white"></div>';
+  var blackDisk = '<div class="disk-container disk-black"><div class="white"></div><div class="black"></div></div>';
+  var whiteDisk = '<div class="disk-container disk-white"><div class="white"></div><div class="black"></div></div>';
 
   test('move', function() {
     strictEqual( $("#info").text(), "black's move", "game initialization fails" );
     squareAt(37).trigger('click');
     strictEqual( squareAt(37).html(), blackDisk, "new disk placement fails" );
-    strictEqual( squareAt(36).html(), blackDisk, "disk flip fails");
+    strictEqual( squareAt(37).children().data('occupier'), 'black', "new disk placement data-occupier not set" );
+    strictEqual( squareAt(36).children().data('occupier'), 'black', "flipped disk data-occupier not set" );
     strictEqual( $("#info").text(), "white's move", "player switch fails" );
   });
 

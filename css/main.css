@@ -1,12 +1,8 @@
 body {
   font-family: Helvetica, Arial, sans-serif;
 }
-div {
-  width: 4em; 
-  height: 4em;
-}
 .board {
-  width: 38em;
+  width: 39em;
   margin: 0 auto;
 }
 .column {
@@ -18,8 +14,11 @@ div {
   margin-top: 0.3em;
   margin-bottom: 0.3em;
   width: 100%;
+  height: 4em;
 }
 .row-label, .column-label {
+  width: 4em;
+  height: 4em;
   display: inline-block;
   text-align: center;
 }
@@ -31,9 +30,16 @@ div {
   vertical-align: middle;
 }
 .square {
+  width: 4em;
+  height: 4em;
   display: inline-block;
   background: #339922;
   vertical-align: middle;
+  -moz-perspective: 1000;
+  -ms-perspective: 1000;
+  -o-perspective: 1000;
+  -webkit-perspective: 1000;
+  perspective: 1000;
 }
 .valid:hover {
   background: #33cc22;
@@ -43,13 +49,48 @@ div {
   height: 3.8em;
   width: 3.8em;
   border-radius: 2em;
+  position: absolute;
+  -moz-backface-visibility: hidden;
+  -ms-backface-visibility: hidden;
+  -o-backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 .black {
   background: #000;
+  -moz-transform: rotateY(180deg);
+  -ms-transform: rotateY(180deg);
+  -o-transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg);
+  transform: rotateY(180deg);
 }
 .white {
   background: #fff;
 }
 .score {
   height: auto;
+}
+.disk-container {
+  width: 100%;
+  height: 100%;
+
+  -moz-transform-style: preserve-3d;
+  -ms-transform-style: preserve-3d;
+  -o-transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+}
+.disk-white {
+  -moz-transform: rotate3d(0,1,0,0deg);
+  -ms-transform: rotate3d(0,1,0,0deg);
+  -o-transform: rotate3d(0,1,0,0deg);
+  -webkit-transform: rotate3d(0,1,0,0deg);
+  transform: rotate3d(0,1,0,0deg);
+}
+.disk-black {
+  -moz-transform: rotate3d(0,1,0,180deg);
+  -ms-transform: rotate3d(0,1,0,180deg);
+  -o-transform: rotate3d(0,1,0,180deg);
+  -webkit-transform: rotate3d(0,1,0,180deg);
+  transform: rotate3d(0,1,0,180deg);
 }

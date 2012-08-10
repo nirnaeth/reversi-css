@@ -6,11 +6,12 @@ var Reversi = (function(global, $, undefined) {
 
   var updateScore = function() {
     var scoreboard = $('#score'),
+        disks = $('.disk-container'),
         whiteScore = scoreboard.find('#white_score'),
         blackScore = scoreboard.find('#black_score');
 
-    whiteScore.text($('.white').length);
-    blackScore.text($('.black').length);
+    whiteScore.text(disks.filter( function() { return $(this).data('occupier') === 'white'; }).length);
+    blackScore.text(disks.filter( function() { return $(this).data('occupier') === 'black'; }).length);
   };
 
   var switchPlayers = function() {
@@ -34,10 +35,10 @@ var Reversi = (function(global, $, undefined) {
 
   var Square = function(id, disk) {
     this.id = id;
-    if (disk.attr('class') === undefined || diskValues.indexOf(disk.attr('class')) === -1 ) {
+    if (disk.data('occupier') === undefined || diskValues.indexOf(disk.data('occupier')) === -1 ) {
       this.state = undefined;
     } else {
-      this.state = disk.attr('class');
+      this.state = disk.data('occupier');
     }
 
     this.flip = function() {
@@ -52,26 +53,25 @@ var Reversi = (function(global, $, undefined) {
   var Board = function(size) {
     // board = { 'a1':  { id: 0, state: (undefined, 'white', 'black') }, 'a2': { id: 1, state: ... } ... }
     this.board = [];
-    if (size === undefined) {
-      this.size = 8;
-    } else {
-      this.size = size;
-    }
+    this.size = size || 8;
     this.leftEdgeDirections = [-this.size, -this.size + 1, 1, this.size, this.size + 1];
     this.rightEdgeDirections = [-this.size, -this.size - 1, -1, this.size, this.size - 1];
     this.directions = [-this.size + 1, -this.size, -this.size - 1, -1, 1, this.size - 1, this.size, this.size + 1];
-
 
     var board = this.board,
         boardContainer = $("#board"),
         boardSquares = boardContainer.find('.square');
 
+
     this.refreshBoardState = function() {
       $('.square').off('click');
+
       boardSquares.each(function() {
         board[boardSquares.index($(this))] = new Square($(this).attr('id'), $(this).children());
       });
+
       updateScore();
+
       var validMoves = this.findValidMoves();
       if (validMoves.length > 0) {
         this.markValidMoves(validMoves);
@@ -81,13 +81,14 @@ var Reversi = (function(global, $, undefined) {
         if (validMoves.length === 0) {
           gameOver();
           return;
-        } else {
-          this.markValidMoves(validMoves);
         }
+        this.markValidMoves(validMoves);
       }
+
       $('.valid').on('click', null, { board: this }, function(event) {
         event.data.board.move($('.square').index($(this)));
       }, this);
+
       $('#info').text(playerToMove + "'s move");
     };
 
@@ -115,34 +116,40 @@ var Reversi = (function(global, $, undefined) {
     };
 
     this.isOnBoard = function(i) {
-      return !(i < 0 || i > this.size * this.size - 1);
+      return ( i >= 0 && i < this.size * this.size );
     };
 
     this.isOnEdge = function(i) {
-      return (i % this.size === 0 || (i+1) % this.size === 0);
+      return ( i % this.size === 0 || (i + 1) % this.size === 0 );
     };
 
     this.isValidLine = function(index, direction) {
       var size = this.size;
-      if (this.isOnBoard(index + direction) && this.board[index + direction].state !== opponent) {
+      if (!this.isOnBoard(index + direction) || this.board[index + direction].state !== opponent) {
         return false;
       }
+      // if this is not a strictly vertical move and the next square is on the edge, it's not valid.
       if (direction !== size && direction !== -size && this.isOnEdge(index + direction)) {
         return false;
       }
 
+      // we already checked the next square over, so evaluate starting from the one after that.
       for(var i = index + (direction * 2); this.isOnBoard(i); i += direction) {
         if (this.board[i].state === undefined) {
+          // line ends in empty square.
           return false;
         } else if (this.board[i].state === playerToMove) {
+          // there's an opponent disk, so it's a valid line.
           return true;
         } else if (direction !== size && direction !== -size && this.isOnEdge(i)) {
+          // we hit the edge without finding an opponent disk.
           return false;
         }
       }
       return false;
     };
 
+    // finds empty squares next to opponent disks. Could potentially be a valid move.
     this.emptyOpponentNeighbors = function() {
       var emptyNeighborIndices = [];
       this.board.forEach(function(square, index, board) {
@@ -160,6 +167,7 @@ var Reversi = (function(global, $, undefined) {
       return emptyNeighborIndices;
     };
 
+    // return the valid directions for a given point on the board.
     this.validDirections = function(position) {
       if (position % this.size === 0) {
         return this.leftEdgeDirections;
@@ -169,6 +177,7 @@ var Reversi = (function(global, $, undefined) {
       return this.directions;
     };
 
+    // returns a list of squares neighboring a square.
     this.getNeighbors = function(position) {
       var neighbors = [],
           bounds = [0, this.size * this.size - 1];
@@ -190,12 +199,15 @@ var Reversi = (function(global, $, undefined) {
     };
 
     this.move = function(index) {
-      var newSquare = $('<div>').addClass(playerToMove),
+      var newSquare = $('<div class="disk-container">').append($('<div class="white">')).append($('<div class="black">'));
           directions = this.validDirections(index);
       $(boardSquares[index]).append(newSquare);
+      $(boardSquares[index]).children().addClass('disk-'+playerToMove).data('occupier', playerToMove);
+
       for (var i = 0; i < directions.length; i++) {
         this.flipLine(index, directions[i]);
       }
+
       switchPlayers();
       this.refreshBoardState();
     };
@@ -209,8 +221,67 @@ var Reversi = (function(global, $, undefined) {
         if (this.board[i].state === playerToMove || this.board[i].state === undefined) {
           return true;
         }
+
+        var rotateArray = [], initialArray = [], square = $(boardSquares[i]).children().first();
+
+        // the purpose of initialArray is to perform two transforms on the same axis.
+        // this is needed to get the rotation transition to display with the correct axis of rotation.
+        // if this is not done, the rotation will be performed on the previous axis of rotation.
+        switch (direction) {
+          case -1:
+            rotateArray = [0,-1,0];
+            initialArray = [0,-1,0];
+            break;
+          case 1:
+            rotateArray = [0,1,0];
+            initialArray = [0,1,0];
+            break;
+          case -this.size + 1:
+            rotateArray = [0.5,0.5,0];
+            initialArray = [0.5,0.5,0];
+            break;
+          case this.size - 1:
+            rotateArray = [0.5,0.5,0];
+            initialArray = [0.5,0.5,0];
+            break;
+          case -this.size:
+            rotateArray = [-1,0,0];
+            initialArray = [-1,0,0];
+            break;
+          case this.size:
+            rotateArray = [1,0,0];
+            initialArray = [1,0,0];
+            break;
+          case -this.size - 1:
+            rotateArray = [0.5,-0.5,0];
+            initialArray = [0.5,-0.5,0];
+            break;
+          case this.size + 1:
+            rotateArray = [0.5,-0.5,0];
+            initialArray = [0.5,-0.5,0];
+            break;
+        }
+
+        // using pi rads instead of 180deg because of Firefox bug
+        // http://bugzil.la/781701
+        if (playerToMove === 'white') {
+          rotateArray.push('0deg');
+          initialArray.push('3.14159rad');
+        } else {
+          rotateArray.push('3.14159rad');
+          initialArray.push('0deg');
+        }
+
+        // first rotate on the new axis, but with the same angle, with no transition
+        square.css({ rotate3d: initialArray });
+
+        // now perform the transition
+        square.transition ({
+          rotate3d: rotateArray
+        });
+
         this.board[i].flip();
-        $(boardSquares[i]).children().removeClass(opponent).addClass(playerToMove);
+        square.data('occupier', playerToMove);
       }
     };
 
